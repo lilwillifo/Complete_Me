@@ -53,6 +53,12 @@ class CompleteMeTest < Minitest::Test
 
     assert_equal completion.suggest_find(["w","o"], completion.rootnode).letter, "o"
     assert_equal completion.suggest_find(["h","e"], completion.rootnode).letter, "e"
+
+    assert_equal completion.suggest("he"), ["hello","hey"]
+
+    completion.insert("he")
+
+    assert_equal completion.suggest("he"), ["he","hello","hey"]
   end
 
 end

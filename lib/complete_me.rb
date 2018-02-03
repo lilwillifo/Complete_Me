@@ -1,4 +1,5 @@
 require_relative 'node'
+require 'pry'
 
 class CompleteMe
 
@@ -38,8 +39,8 @@ class CompleteMe
 
   def suggest(substring)
     letters = substring.downcase.chars
-    sub_node = substring_find(letters, @rootnode)
-    suggest_array(sub_node)
+    sub_node = suggest_find(letters, @rootnode)
+    suggest_array(sub_node, substring)
 
   end
 
@@ -58,8 +59,15 @@ class CompleteMe
     end
   end
 
-  def suggest_array(node)
-    
+  def suggest_array(node, substring)
+    suggestions = []
+    if node.is_word?
+      suggestions << substring
+    end
+    node.children.each do |letter, lnode|
+      suggestions += suggest_array(lnode, substring + letter)
+    end
+    suggestions
   end
 
 
