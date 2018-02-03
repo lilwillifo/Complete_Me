@@ -12,5 +12,9 @@ class Node
     @word = true
   end
 
+  def is_word?
+    @word
+  end
+
 
 end
