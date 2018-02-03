@@ -45,4 +45,14 @@ class CompleteMeTest < Minitest::Test
     assert_equal 3, completion.count
   end
 
+  def test_suggest
+    completion = CompleteMe.new
+    completion.insert("hello")
+    completion.insert("hey")
+    completion.insert("world")
+
+    assert_equal completion.suggest_find(["w","o"], completion.rootnode).letter, "o"
+    assert_equal completion.suggest_find(["h","e"], completion.rootnode).letter, "e"
+  end
+
 end

@@ -36,6 +36,32 @@ class CompleteMe
     @totalwords
   end
 
+  def suggest(substring)
+    letters = substring.downcase.chars
+    sub_node = substring_find(letters, @rootnode)
+    suggest_array(sub_node)
+
+  end
+
+  def suggest_find(letters, node)
+    if letters.length > 0
+      if node.children.key?(letters[0])
+        next_node = node.children[letters[0]]
+        letters.delete_at(0)
+        suggest_find(letters, next_node)
+      else
+        #does not exist
+        nil
+      end
+    else
+      node
+    end
+  end
+
+  def suggest_array(node)
+    
+  end
+
 
 
 end
