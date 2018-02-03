@@ -1,64 +1,92 @@
+# completeme class
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/complete_me'
 
 class CompleteMeTest < Minitest::Test
+  def setup
+    @completion = CompleteMe.new
+  end
 
   def test_complete_me_exists
-    completion = CompleteMe.new
-    assert_instance_of CompleteMe, completion
+    assert_instance_of CompleteMe, @completion
   end
 
   def test_insert
-    completion = CompleteMe.new
-    #refute completion.insert("pizza")
+    @completion.insert('pi')
+    @completion.insert('pizza')
+    @completion.insert('hi')
+
+    p_node = @completion.rootnode.children['p']
+
+    assert @completion.rootnode.children.key?('p')
+    assert_equal @completion.rootnode.children.keys, ['p', 'h']
+    refute p_node.is_word?
+    assert p_node.children.key?('i')
   end
 
-  def test_insert
-    completion = CompleteMe.new
-    completion.insert("pi")
-    completion.insert("pizza")
-    completion.insert("hi")
+  def test_insert_creates_word
+    @completion.insert('pi')
+    @completion.insert('pizza')
+    @completion.insert('hi')
 
-    assert completion.rootnode.children.key?("p")
-    assert_equal completion.rootnode.children.keys, ["p", "h"]
-    refute completion.rootnode.children["p"].is_word?
-    assert completion.rootnode.children["p"].children.key?("i")
-    assert completion.rootnode.children["p"].children["i"].is_word?
-    assert completion.rootnode.children["p"].children["i"].children["z"].children["z"].children["a"].is_word?
-    refute completion.rootnode.children["p"].children["i"].children["z"].is_word?
+    p_node = @completion.rootnode.children['p']
+    i_node = p_node.children['i']
+
+    assert i_node.is_word?
+    assert i_node.children['z'].children['z'].children['a'].is_word?
+    refute i_node.children['z'].is_word?
   end
 
   def test_count
-    completion = CompleteMe.new
+    assert_equal 0, @completion.count
 
-    assert_equal 0, completion.count
+    @completion.insert('hello')
+    assert_equal 1, @completion.count
 
-    completion.insert("hello")
-    assert_equal 1, completion.count
+    @completion.insert('hey')
+    assert_equal 2, @completion.count
 
-    completion.insert("hey")
-    assert_equal 2, completion.count
-
-    completion.insert("PiZzA")
-    assert_equal 3, completion.count
+    @completion.insert('PiZzA')
+    assert_equal 3, @completion.count
   end
 
   def test_suggest
-    completion = CompleteMe.new
-    completion.insert("hello")
-    completion.insert("hey")
-    completion.insert("world")
+    @completion.insert('hello')
+    @completion.insert('hey')
+    @completion.insert('world')
 
-    assert_equal completion.suggest_find(["w","o"], completion.rootnode).letter, "o"
-    assert_equal completion.suggest_find(["h","e"], completion.rootnode).letter, "e"
+    root = @completion.rootnode
 
-    assert_equal completion.suggest("he"), ["hello","hey"]
+    assert_equal 'o', @completion.suggest_find(['w','o'], root).letter
+    assert_equal 'e', @completion.suggest_find(['h','e'], root).letter
 
-    completion.insert("he")
+    assert_equal @completion.suggest('he'), ['hello','hey']
 
-    assert_equal completion.suggest("he"), ["he","hello","hey"]
+    @completion.insert('he')
+
+    assert_equal @completion.suggest('he'), ['he','hello','hey']
+  end
+
+  def test_select
+    skip
+    @completion.insert('word')
+    @completion.insert('world')
+    @completion.insert('worms')
+    @completion.select('world')
+
+    assert_equal ['world', 'word', 'worms'], @completion.suggest('wor')
+    assert_equal ['world', 'word', 'worms'], @completion.suggest('wo')
+    assert_equal ['worms'], @completion.suggest('worm')
+  end
+
+  def test_populate_dictionary
+    skip
+    dictionary = File.read('/usr/share/dict/words')
+    @completion.populate(dictionary)
+
+    assert_equal 235886, @completion.count
   end
 
 end

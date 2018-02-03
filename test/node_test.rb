@@ -13,5 +13,12 @@ class NodeTest < Minitest::Test
     refute node.is_word?
   end
 
+  def test_make_word
+    node = Node.new('a')
+    node.make_word
+
+    assert node.is_word?
+  end
+
 
 end
