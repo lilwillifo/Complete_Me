@@ -2,7 +2,6 @@ require_relative 'node'
 require 'pry'
 
 class CompleteMe
-
   attr_reader :rootnode
 
   def initialize
@@ -70,6 +69,10 @@ class CompleteMe
     suggestions
   end
 
+  def select(substring)
+  end
 
+  def populate(dictionary)
+  end
 
 end
