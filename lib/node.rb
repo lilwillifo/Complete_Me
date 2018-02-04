@@ -13,7 +13,7 @@ class Node
     if @word == false
       @word = true
     else
-      false
+      'That word is already in the dictionary.'
     end
   end
 

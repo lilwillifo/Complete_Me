@@ -61,8 +61,8 @@ class CompleteMe
   def suggest_array(node, substring)
     suggestions = []
     suggestions << substring if node.is_word?
-    node.children.each do |letter, lnode|
-      suggestions += suggest_array(lnode, substring + letter)
+    node.children.each do |letter, letter_node|
+      suggestions += suggest_array(letter_node, substring + letter)
     end
     suggestions
   end

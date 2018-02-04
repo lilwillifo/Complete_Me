@@ -4,6 +4,7 @@ require 'minitest/pride'
 require './lib/node'
 require_relative 'test_helper'
 
+# test of Node class
 class NodeTest < Minitest::Test
   def test_node_exists
     node = Node.new('a')
@@ -30,9 +31,6 @@ class NodeTest < Minitest::Test
   def test_delete_word
     node = Node.new('a')
     node.make_word
-
-    assert node.is_word?
-
     node.delete_word
 
     refute node.is_word?
@@ -43,19 +41,19 @@ class NodeTest < Minitest::Test
 
     node.add_select('alpha')
 
-    assert_equal node.retrieve_selections, ['alpha']
+    assert_equal ['alpha'], node.retrieve_selections
 
     node.add_select('alpha')
 
-    assert_equal node.retrieve_selections, ['alpha']
+    assert_equal ['alpha'], node.retrieve_selections
 
     node.add_select('apple')
     node.add_select('apple')
 
-    assert_equal node.retrieve_selections, %w[alpha apple]
+    assert_equal %w[alpha apple], node.retrieve_selections
 
     node.add_select('apple')
 
-    assert_equal node.retrieve_selections, %w[apple alpha]
+    assert_equal %w[apple alpha], node.retrieve_selections
   end
 end
