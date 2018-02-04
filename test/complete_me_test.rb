@@ -60,7 +60,6 @@ class CompleteMeTest < Minitest::Test
 
     root = @completion.rootnode
 
-
     assert_equal 'o', @completion.suggest_find(%w[w o], root).letter
     assert_equal 'e', @completion.suggest_find(%w[h e], root).letter
 

@@ -38,24 +38,24 @@ class NodeTest < Minitest::Test
     refute node.is_word?
   end
 
-  def test_select_and_get_selections
+  def test_select_and_retrieve_selections
     node = Node.new('a')
 
-    node.add_select("alpha")
+    node.add_select('alpha')
 
-    assert_equal node.get_selections, ["alpha"]
+    assert_equal node.retrieve_selections, ['alpha']
 
-    node.add_select("alpha")
+    node.add_select('alpha')
 
-    assert_equal node.get_selections, ["alpha"]
+    assert_equal node.retrieve_selections, ['alpha']
 
-    node.add_select("apple")
-    node.add_select("apple")
+    node.add_select('apple')
+    node.add_select('apple')
 
-    assert_equal node.get_selections, ["alpha","apple"]
+    assert_equal node.retrieve_selections, %w[alpha apple]
 
-    node.add_select("apple")
+    node.add_select('apple')
 
-    assert_equal node.get_selections, ["apple","alpha"]
+    assert_equal node.retrieve_selections, %w[apple alpha]
   end
 end

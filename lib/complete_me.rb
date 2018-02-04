@@ -39,7 +39,7 @@ class CompleteMe
   def suggest(substring)
     letters = substring.downcase.chars
     sub_node = find_substring_node(letters, @rootnode)
-    (sub_node.get_selections+suggest_array(sub_node, substring)).uniq
+    (sub_node.get_selections + suggest_array(sub_node, substring)).uniq
   end
 
   def find_substring_node(letters, node)
@@ -48,8 +48,6 @@ class CompleteMe
         next_node = node.children[letters[0]]
         letters.delete_at(0)
         find_substring_node(letters, next_node)
-      else #does not exist
-        nil
       end
     else
       node
