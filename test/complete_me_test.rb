@@ -82,7 +82,6 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_populate_dictionary
-    skip
     dictionary = File.read('/usr/share/dict/words')
     @completion.populate(dictionary)
 

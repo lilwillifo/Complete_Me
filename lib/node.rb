@@ -1,3 +1,4 @@
+
 class Node
   attr_reader :letter,
               :children

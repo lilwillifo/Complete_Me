@@ -74,6 +74,9 @@ class CompleteMe
   end
 
   def populate(dictionary)
+    words = dictionary.split
+    words.each do |word|
+      insert(word)
+    end
   end
-
 end
