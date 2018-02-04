@@ -60,8 +60,8 @@ class CompleteMeTest < Minitest::Test
 
     root = @completion.rootnode
 
-    assert_equal 'o', @completion.suggest_find(['w','o'], root).letter
-    assert_equal 'e', @completion.suggest_find(['h','e'], root).letter
+    assert_equal 'o', @completion.find_substring_node(['w','o'], root).letter
+    assert_equal 'e', @completion.find_substring_node(['h','e'], root).letter
 
     assert_equal @completion.suggest('he'), ['hello','hey']
 
@@ -71,13 +71,12 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_select
-    skip
     @completion.insert('word')
     @completion.insert('world')
     @completion.insert('worms')
-    @completion.select('world')
+    @completion.select('wo', 'world')
 
-    assert_equal ['world', 'word', 'worms'], @completion.suggest('wor')
+    assert_equal ['word', 'world', 'worms'], @completion.suggest('wor')
     assert_equal ['world', 'word', 'worms'], @completion.suggest('wo')
     assert_equal ['worms'], @completion.suggest('worm')
   end

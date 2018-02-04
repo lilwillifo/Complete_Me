@@ -38,19 +38,17 @@ class CompleteMe
 
   def suggest(substring)
     letters = substring.downcase.chars
-    sub_node = suggest_find(letters, @rootnode)
-    suggest_array(sub_node, substring)
-
+    sub_node = find_substring_node(letters, @rootnode)
+    (sub_node.get_selections+suggest_array(sub_node, substring)).uniq
   end
 
-  def suggest_find(letters, node)
+  def find_substring_node(letters, node)
     if letters.length > 0
       if node.children.key?(letters[0])
         next_node = node.children[letters[0]]
         letters.delete_at(0)
-        suggest_find(letters, next_node)
-      else
-        #does not exist
+        find_substring_node(letters, next_node)
+      else #does not exist
         nil
       end
     else
@@ -69,7 +67,10 @@ class CompleteMe
     suggestions
   end
 
-  def select(substring)
+  def select(substring, selection)
+    letters = substring.downcase.chars
+    sub_node = find_substring_node(letters, @rootnode)
+    sub_node.add_select(selection.downcase)
   end
 
   def populate(dictionary)

@@ -41,20 +41,20 @@ class NodeTest < Minitest::Test
   def test_select_and_get_selections
     node = Node.new('a')
 
-    node.select("alpha")
+    node.add_select("alpha")
 
     assert_equal node.get_selections, ["alpha"]
 
-    node.select("alpha")
+    node.add_select("alpha")
 
     assert_equal node.get_selections, ["alpha"]
 
-    node.select("apple")
-    node.select("apple")
+    node.add_select("apple")
+    node.add_select("apple")
 
     assert_equal node.get_selections, ["alpha","apple"]
 
-    node.select("apple")
+    node.add_select("apple")
 
     assert_equal node.get_selections, ["apple","alpha"]
   end

@@ -30,7 +30,7 @@ class Node
     @word
   end
 
-  def select(word)
+  def add_select(word)
     inserted = false
     i = 0
     while !inserted && i < @selections.length do
