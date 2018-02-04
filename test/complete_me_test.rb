@@ -3,6 +3,7 @@ require 'minitest'
 require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/complete_me'
+require_relative 'test_helper'
 
 class CompleteMeTest < Minitest::Test
   def setup
