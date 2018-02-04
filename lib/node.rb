@@ -33,7 +33,7 @@ class Node
   def add_select(word)
     inserted = false
     i = 0
-    while !inserted && i < @selections.length do
+    while !inserted && i < @selections.length
       if @selections[i][0] == word
         inserted = true
         @selections[i][1] += 1

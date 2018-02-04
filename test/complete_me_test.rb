@@ -1,10 +1,10 @@
-# completeme class
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/complete_me'
 require_relative 'test_helper'
 
+# test for complete me class
 class CompleteMeTest < Minitest::Test
   def setup
     @completion = CompleteMe.new
@@ -22,7 +22,7 @@ class CompleteMeTest < Minitest::Test
     p_node = @completion.rootnode.children['p']
 
     assert @completion.rootnode.children.key?('p')
-    assert_equal @completion.rootnode.children.keys, ['p', 'h']
+    assert_equal @completion.rootnode.children.keys, %w[p h]
     refute p_node.is_word?
     assert p_node.children.key?('i')
   end
@@ -60,8 +60,8 @@ class CompleteMeTest < Minitest::Test
 
     root = @completion.rootnode
 
-    assert_equal 'o', @completion.suggest_find(%w[w o], root).letter
-    assert_equal 'e', @completion.suggest_find(%w[h e], root).letter
+    assert_equal 'o', @completion.find_substring_node(%w[w o], root).letter
+    assert_equal 'e', @completion.find_substring_node(%w[h e], root).letter
 
     assert_equal @completion.suggest('he'), %w[hello hey]
 
@@ -76,7 +76,7 @@ class CompleteMeTest < Minitest::Test
     @completion.insert('worms')
     @completion.select('wo', 'world')
 
-    assert_equal %w[world word worms], @completion.suggest('wor')
+    assert_equal %w[word world worms], @completion.suggest('wor')
     assert_equal %w[world word worms], @completion.suggest('wo')
     assert_equal %w[worms], @completion.suggest('worm')
   end
@@ -88,5 +88,4 @@ class CompleteMeTest < Minitest::Test
 
     assert_equal 235_886, @completion.count
   end
-
 end
