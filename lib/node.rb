@@ -46,9 +46,7 @@ class Node
         i += 1
       end
     end
-    unless inserted
-      @selections << [word, 1]
-    end
+    @selections << [word, 1] unless inserted
   end
 
   def retrieve_selections
