@@ -60,14 +60,14 @@ class CompleteMeTest < Minitest::Test
 
     root = @completion.rootnode
 
-    assert_equal 'o', @completion.suggest_find(['w','o'], root).letter
-    assert_equal 'e', @completion.suggest_find(['h','e'], root).letter
+    assert_equal 'o', @completion.suggest_find(%w[w o], root).letter
+    assert_equal 'e', @completion.suggest_find(%w[h e], root).letter
 
-    assert_equal @completion.suggest('he'), ['hello','hey']
+    assert_equal @completion.suggest('he'), %w[hello hey]
 
     @completion.insert('he')
 
-    assert_equal @completion.suggest('he'), ['he','hello','hey']
+    assert_equal @completion.suggest('he'), %w[he hello hey]
   end
 
   def test_select
@@ -77,9 +77,9 @@ class CompleteMeTest < Minitest::Test
     @completion.insert('worms')
     @completion.select('world')
 
-    assert_equal ['world', 'word', 'worms'], @completion.suggest('wor')
-    assert_equal ['world', 'word', 'worms'], @completion.suggest('wo')
-    assert_equal ['worms'], @completion.suggest('worm')
+    assert_equal %w[world word worms], @completion.suggest('wor')
+    assert_equal %w[world word worms], @completion.suggest('wo')
+    assert_equal %w[worms], @completion.suggest('worm')
   end
 
   def test_populate_dictionary
@@ -87,7 +87,7 @@ class CompleteMeTest < Minitest::Test
     dictionary = File.read('/usr/share/dict/words')
     @completion.populate(dictionary)
 
-    assert_equal 235886, @completion.count
+    assert_equal 235_886, @completion.count
   end
 
 end
