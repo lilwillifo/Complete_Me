@@ -39,9 +39,8 @@ class Node
         inserted = true
         @selections[index][1] += 1
         swap_sort(index)
-      else
-        i += 1
       end
+      index += 1
     end
     @selections << [word, 1] unless inserted
   end
