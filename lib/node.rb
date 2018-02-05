@@ -33,11 +33,11 @@ class Node
 
   def add_select(word)
     inserted = false
-    i = 0
-    while !inserted && i < @selections.length
-      if @selections[i][0] == word
+    index = 0
+    while !inserted && index < @selections.length
+      if @selections[index][0] == word
         inserted = true
-        @selections[i][1] += 1
+        @selections[index][1] += 1
         swap_sort(index)
       else
         i += 1
@@ -47,10 +47,10 @@ class Node
   end
 
   def swap_sort(index)
-    while @selections[i - 1][1] < @selections[i][1]
-      swap = @selections[i - 1]
-      @selections[i - 1] = @selections[i]
-      @selections[i] = swap
+    while @selections[index - 1][1] < @selections[i][1]
+      swap = @selections[index - 1]
+      @selections[index - 1] = @selections[i]
+      @selections[index] = swap
     end
   end
 

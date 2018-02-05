@@ -16,12 +16,18 @@ class CompleteMeTest < Minitest::Test
 
   def test_insert
     @completion.insert('pi')
-    @completion.insert('pizza')
+    @completion.insert('hi')
+
+    assert @completion.rootnode.children.key?('p')
+    assert @completion.rootnode.children.key?('h')
+  end
+
+  def test_insert_array
+    @completion.insert('pi')
     @completion.insert('hi')
 
     p_node = @completion.rootnode.children['p']
 
-    assert @completion.rootnode.children.key?('p')
     assert_equal @completion.rootnode.children.keys, %w[p h]
     refute p_node.is_word?
     assert p_node.children.key?('i')
@@ -29,15 +35,18 @@ class CompleteMeTest < Minitest::Test
 
   def test_insert_creates_word
     @completion.insert('pi')
-    @completion.insert('pizza')
-    @completion.insert('hi')
+    @completion.insert('pie')
 
-    p_node = @completion.rootnode.children['p']
-    i_node = p_node.children['i']
+    i_node = @completion.rootnode.children['p'].children['i']
 
     assert i_node.is_word?
-    assert i_node.children['z'].children['z'].children['a'].is_word?
-    refute i_node.children['z'].is_word?
+    assert i_node.children['e'].is_word?
+  end
+
+  def test_substrings_arent_words
+    @completion.insert('hello')
+
+    refute @completion.rootnode.children['h'].is_word?
   end
 
   def test_count
