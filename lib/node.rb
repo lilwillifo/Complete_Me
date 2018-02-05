@@ -19,12 +19,7 @@ class Node
   end
 
   def delete_word
-    if @word == true
-      @word = false
-      true
-    else
-      false
-    end
+    @word = false
   end
 
   def is_word?

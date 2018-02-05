@@ -91,9 +91,21 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_populate_dictionary
+    skip
     dictionary = File.read('/usr/share/dict/words')
     @completion.populate(dictionary)
 
     assert_equal 235_886, @completion.count
+  end
+
+  def test_delete_if_word_doesnt_exist
+    refute @completion.delete('anything')
+  end
+
+  def test_delete_of_word_no_children
+    @completion.insert('hi')
+    @completion.delete('hi')
+
+    assert_equal [], @completion.rootnode.children
   end
 end
