@@ -100,7 +100,6 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_delete_if_word_doesnt_exist
-    skip
     refute @completion.delete('anything')
   end
 
@@ -123,5 +122,23 @@ class CompleteMeTest < Minitest::Test
     assert_equal ['h'], @completion.rootnode.children.keys
     assert i_node.is_word?
     refute i_node.children.keys.include?('m')
+  end
+
+  def test_delete_word_with_parent_word_a_few_steps_back
+    @completion.insert('ask')
+    @completion.insert('asking')
+    @completion.delete('asking')
+
+    k_node = @completion.rootnode.children['a'].children['s'].children['k']
+
+    assert k_node.is_word?
+    refute k_node.children.keys.include?('i')
+  end
+
+  def test_delete_only_word_in_tree
+    @completion.insert('word')
+    @completion.delete('word')
+
+    assert_equal 0, @completion.rootnode.children.length
   end
 end
