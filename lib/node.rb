@@ -38,16 +38,20 @@ class Node
       if @selections[i][0] == word
         inserted = true
         @selections[i][1] += 1
-        while @selections[i - 1][1] < @selections[i][1]
-          swap = @selections[i - 1]
-          @selections[i - 1] = @selections[i]
-          @selections[i] = swap
-        end
+        swap_sort(index)
       else
         i += 1
       end
     end
     @selections << [word, 1] unless inserted
+  end
+
+  def swap_sort(index)
+    while @selections[i - 1][1] < @selections[i][1]
+      swap = @selections[i - 1]
+      @selections[i - 1] = @selections[i]
+      @selections[i] = swap
+    end
   end
 
   def retrieve_selections
