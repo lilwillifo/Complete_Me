@@ -1,10 +1,10 @@
-# completeme class
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/complete_me'
 require_relative 'test_helper'
 
+# test for complete me class
 class CompleteMeTest < Minitest::Test
   def setup
     @completion = CompleteMe.new
@@ -16,28 +16,37 @@ class CompleteMeTest < Minitest::Test
 
   def test_insert
     @completion.insert('pi')
-    @completion.insert('pizza')
+    @completion.insert('hi')
+
+    assert @completion.rootnode.children.key?('p')
+    assert @completion.rootnode.children.key?('h')
+  end
+
+  def test_insert_array
+    @completion.insert('pi')
     @completion.insert('hi')
 
     p_node = @completion.rootnode.children['p']
 
-    assert @completion.rootnode.children.key?('p')
-    assert_equal @completion.rootnode.children.keys, ['p', 'h']
+    assert_equal @completion.rootnode.children.keys, %w[p h]
     refute p_node.is_word?
     assert p_node.children.key?('i')
   end
 
   def test_insert_creates_word
     @completion.insert('pi')
-    @completion.insert('pizza')
-    @completion.insert('hi')
+    @completion.insert('pie')
 
-    p_node = @completion.rootnode.children['p']
-    i_node = p_node.children['i']
+    i_node = @completion.rootnode.children['p'].children['i']
 
     assert i_node.is_word?
-    assert i_node.children['z'].children['z'].children['a'].is_word?
-    refute i_node.children['z'].is_word?
+    assert i_node.children['e'].is_word?
+  end
+
+  def test_substrings_arent_words
+    @completion.insert('hello')
+
+    refute @completion.rootnode.children['h'].is_word?
   end
 
   def test_count
@@ -60,8 +69,8 @@ class CompleteMeTest < Minitest::Test
 
     root = @completion.rootnode
 
-    assert_equal 'o', @completion.suggest_find(%w[w o], root).letter
-    assert_equal 'e', @completion.suggest_find(%w[h e], root).letter
+    assert_equal 'o', @completion.find_substring_node(%w[w o], root).letter
+    assert_equal 'e', @completion.find_substring_node(%w[h e], root).letter
 
     assert_equal @completion.suggest('he'), %w[hello hey]
 
@@ -76,17 +85,15 @@ class CompleteMeTest < Minitest::Test
     @completion.insert('worms')
     @completion.select('wo', 'world')
 
-    assert_equal %w[world word worms], @completion.suggest('wor')
+    assert_equal %w[word world worms], @completion.suggest('wor')
     assert_equal %w[world word worms], @completion.suggest('wo')
     assert_equal %w[worms], @completion.suggest('worm')
   end
 
   def test_populate_dictionary
-    skip
     dictionary = File.read('/usr/share/dict/words')
     @completion.populate(dictionary)
 
     assert_equal 235_886, @completion.count
   end
-
 end

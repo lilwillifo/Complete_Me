@@ -1,3 +1,4 @@
+
 class Node
   attr_reader :letter,
               :children
@@ -13,7 +14,7 @@ class Node
     if @word == false
       @word = true
     else
-      false
+      'That word is already in the dictionary.'
     end
   end
 
@@ -32,22 +33,23 @@ class Node
 
   def add_select(word)
     inserted = false
-    i = 0
-    while !inserted && i < @selections.length do
-      if @selections[i][0] == word
+    index = 0
+    while !inserted && index < @selections.length
+      if @selections[index][0] == word
         inserted = true
-        @selections[i][1] += 1
-        while @selections[i - 1][1] < @selections[i][1]
-          swap = @selections[i - 1]
-          @selections[i - 1] = @selections[i]
-          @selections[i] = swap
-        end
-      else
-        i += 1
+        @selections[index][1] += 1
+        swap_sort(index)
       end
+      index += 1
     end
-    unless inserted
-      @selections << [word, 1]
+    @selections << [word, 1] unless inserted
+  end
+
+  def swap_sort(index)
+    while @selections[index - 1][1] < @selections[index][1]
+      swap = @selections[index - 1]
+      @selections[index - 1] = @selections[index]
+      @selections[index] = swap
     end
   end
 
