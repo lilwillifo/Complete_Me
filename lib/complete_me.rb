@@ -81,6 +81,30 @@ class CompleteMe
   end
 
   def delete(word)
+    letters = word.downcase.chars
+    node_and_parent = delete_helper_find(letters, @rootnode, nil)
+    if !node_and_parent[0].children.empty?
+      node_and_parent[0].delete_word
+    else
+      letters = word.downcase.chars
+      node_and_parent[1].children.delete(letters.last)
+      if node_and_parent[1].children.length == 0
 
+      end
+    end
+  end
+
+  def delete_helper(letters, node)
+
+  def delete_helper_find(letters, node, parent)
+    if !letters.empty?
+      if node.children.key?(letters[0])
+        next_node = node.children[letters[0]]
+        letters.delete_at(0)
+        delete_helper_find(letters, next_node, node)
+      end
+    else
+      [node, parent]
+    end
   end
 end

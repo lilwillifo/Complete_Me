@@ -3,6 +3,7 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/complete_me'
 require_relative 'test_helper'
+require 'pry'
 
 # test for complete me class
 class CompleteMeTest < Minitest::Test
@@ -99,13 +100,28 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_delete_if_word_doesnt_exist
+    skip
     refute @completion.delete('anything')
   end
 
-  def test_delete_of_word_no_children
+  def test_delete_of_word_with_children
     @completion.insert('hi')
+    @completion.insert('him')
     @completion.delete('hi')
 
-    assert_equal [], @completion.rootnode.children
+    assert_equal ['h'], @completion.rootnode.children.keys
+    refute @completion.rootnode.children['h'].children['i'].is_word?
+  end
+
+  def test_delete_of_word_with_no_children
+    @completion.insert('hi')
+    @completion.insert('him')
+    @completion.delete('him')
+
+    i_node = @completion.rootnode.children['h'].children['i']
+
+    assert_equal ['h'], @completion.rootnode.children.keys
+    assert i_node.is_word?
+    refute i_node.children.keys.include?('m')
   end
 end
