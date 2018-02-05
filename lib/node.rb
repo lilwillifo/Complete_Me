@@ -51,4 +51,11 @@ class Node
   def retrieve_selections
     @selections.map { |selection| selection[0] }
   end
+
+  def delete_selection(word)
+    index = retrieve_selections.index(word)
+    if index
+      @selections.delete_at(index)
+    end
+  end
 end

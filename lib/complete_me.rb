@@ -83,10 +83,14 @@ class CompleteMe
   def delete(word)
     letters = word.downcase.chars
     parent_array = delete_helper_find(letters, @rootnode)
-    if !parent_array[-1].children.empty?#word has children
+    if parent_array[-1] == "Does not exist"
+      "Does not exist"
+    elsif !parent_array[-1].children.empty?#word has children
       parent_array[-1].delete_word
+      remove_suggestions(parent_array, word.downcase)
     else
-      delete_helper(word.downcase.chars, parent_array)
+      node_array = delete_helper(word.downcase.chars, parent_array)
+      remove_suggestions(node_array, word.downcase)
     end
   end
 
@@ -95,6 +99,13 @@ class CompleteMe
     parent_array[-1].children.delete(letters.pop)
     if parent_array[-1].children.empty? && !parent_array[-1].is_word? && parent_array[-1] != @rootnode#word has no children and node is not a word
       delete_helper(letters, parent_array)
+    end
+    parent_array
+  end
+
+  def remove_suggestions(node_array, word)
+    node_array.each do |node|
+      node.delete_selection(word)
     end
   end
 
@@ -105,6 +116,8 @@ class CompleteMe
         next_node = node.children[letters[0]]
         letters.delete_at(0)
         parent_array += delete_helper_find(letters, next_node)
+      else
+        parent_array << "Does not exist"
       end
     end
     parent_array

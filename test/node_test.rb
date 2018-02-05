@@ -56,4 +56,16 @@ class NodeTest < Minitest::Test
 
     assert_equal %w[apple alpha], node.retrieve_selections
   end
+
+  def test_delete_selection
+    node = Node.new('a')
+    node.add_select('a')
+    node.add_select('at')
+
+    assert_equal ['a','at'], node.retrieve_selections
+
+    node.delete_selection('at')
+
+    assert_equal ['a'], node.retrieve_selections
+  end
 end

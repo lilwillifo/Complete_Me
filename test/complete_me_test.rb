@@ -100,7 +100,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_delete_if_word_doesnt_exist
-    refute @completion.delete('anything')
+    assert_equal "Does not exist", @completion.delete('anything')
   end
 
   def test_delete_of_word_with_children
@@ -140,5 +140,18 @@ class CompleteMeTest < Minitest::Test
     @completion.delete('word')
 
     assert_equal 0, @completion.rootnode.children.length
+  end
+
+  def test_remove_suggestions
+    @completion.insert('a')
+    @completion.insert('at')
+
+    @completion.select('a','at')
+
+    assert_equal ['at','a'], @completion.suggest('a')
+
+    @completion.delete('at')
+
+    assert_equal ['a'], @completion.suggest('a')
   end
 end
