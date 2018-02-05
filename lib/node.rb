@@ -46,9 +46,9 @@ class Node
   end
 
   def swap_sort(index)
-    while @selections[index - 1][1] < @selections[i][1]
+    while @selections[index - 1][1] < @selections[index][1]
       swap = @selections[index - 1]
-      @selections[index - 1] = @selections[i]
+      @selections[index - 1] = @selections[index]
       @selections[index] = swap
     end
   end
