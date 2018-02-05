@@ -79,4 +79,8 @@ class CompleteMe
       insert(word)
     end
   end
+
+  def delete(word)
+
+  end
 end
