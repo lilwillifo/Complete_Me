@@ -73,7 +73,7 @@ class CompleteMe
 
   def suggest_array(node, substring)
     suggestions = []
-    suggestions << substring if node.is_word?
+    suggestions << substring if node.word?
     node.children.each do |letter, letter_node|
       suggestions += suggest_array(letter_node, substring + letter)
     end
@@ -115,7 +115,7 @@ class CompleteMe
     parents.pop
     parent = parents[-1]
     parent.children.delete(letters.pop)
-    if parent.children.empty? && !parent.is_word? && parent != @rootnode
+    if parent.children.empty? && !parent.word? && parent != @rootnode
       delete_with_no_children(letters, parents)
     end
     parents
