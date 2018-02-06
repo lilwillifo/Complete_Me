@@ -1,6 +1,7 @@
 require_relative 'node'
 require 'pry'
 
+# class for autocomplete
 class CompleteMe
   attr_reader :rootnode
 
@@ -82,25 +83,27 @@ class CompleteMe
 
   def delete(word)
     letters = word.downcase.chars
-    parent_array = delete_helper_find(letters, @rootnode)
-    if parent_array[-1] == "Does not exist"
-      "Does not exist"
-    elsif !parent_array[-1].children.empty?#word has children
-      parent_array[-1].delete_word
-      remove_suggestions(parent_array, word.downcase)
-    else
-      node_array = delete_helper(word.downcase.chars, parent_array)
-      remove_suggestions(node_array, word.downcase)
+    parents = find_parents(letters, @rootnode)
+    parent = parents[-1]
+    unless parent == @rootnode
+      if !parent.children.empty?
+        parent.delete_word
+        remove_suggestions(parents, word.downcase)
+      else
+        node_array = delete_with_no_children(word.downcase.chars, parents)
+        remove_suggestions(node_array, word.downcase)
+      end
     end
   end
 
-  def delete_helper(letters, parent_array)
-    parent_array.pop
-    parent_array[-1].children.delete(letters.pop)
-    if parent_array[-1].children.empty? && !parent_array[-1].is_word? && parent_array[-1] != @rootnode#word has no children and node is not a word
-      delete_helper(letters, parent_array)
+  def delete_with_no_children(letters, parents)
+    parents.pop
+    parent = parents[-1]
+    parent.children.delete(letters.pop)
+    if parent.children.empty? && !parent.is_word? && parent != @rootnode
+      delete_with_no_children(letters, parents)
     end
-    parent_array
+    parents
   end
 
   def remove_suggestions(node_array, word)
@@ -109,17 +112,17 @@ class CompleteMe
     end
   end
 
-  def delete_helper_find(letters, node)
-    parent_array = [node]
-    if !letters.empty?
+  def find_parents(letters, node)
+    parents = [node]
+    unless letters.empty?
       if node.children.key?(letters[0])
         next_node = node.children[letters[0]]
         letters.delete_at(0)
-        parent_array += delete_helper_find(letters, next_node)
+        parents += find_parents(letters, next_node)
       else
-        parent_array << "Does not exist"
+        parents
       end
     end
-    parent_array
+    parents
   end
 end

@@ -92,6 +92,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_populate_dictionary
+    skip
     dictionary = File.read('/usr/share/dict/words')
     @completion.populate(dictionary)
 
@@ -99,22 +100,23 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_populate_denver_addresses
+    skip
     dictionary = File.readlines('./test/addresses.csv')
     dictionary.delete_at(0)
     dictionary.each do |line|
-      @completion.insert(line.split(",")[-1].chomp)
+      @completion.insert(line.split(',')[-1].chomp)
     end
 
+    expected = ['4900 n dahlia st', '4900 n durham ct', '4900 n duluth ct',
+                '4900 n decatur st', '4900 n dillon st']
+
     assert_equal 310_015, @completion.count
-
-    assert_equal ["4900 n dahlia st"], @completion.suggest('4900 n da')
-
-    expected = ["4900 n dahlia st", "4900 n durham ct", "4900 n duluth ct", "4900 n decatur st", "4900 n dillon st"]
+    assert_equal ['4900 n dahlia st'], @completion.suggest('4900 n da')
     assert_equal expected, @completion.suggest('4900 n d')
   end
 
   def test_delete_if_word_doesnt_exist
-    assert_equal "Does not exist", @completion.delete('anything')
+    assert_equal nil, @completion.delete('anything')
   end
 
   def test_delete_of_word_with_children
