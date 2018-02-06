@@ -30,7 +30,7 @@ class CompleteMeTest < Minitest::Test
     p_node = @completion.rootnode.children['p']
 
     assert_equal @completion.rootnode.children.keys, %w[p h]
-    refute p_node.is_word?
+    refute p_node.word?
     assert p_node.children.key?('i')
   end
 
@@ -40,14 +40,14 @@ class CompleteMeTest < Minitest::Test
 
     i_node = @completion.rootnode.children['p'].children['i']
 
-    assert i_node.is_word?
-    assert i_node.children['e'].is_word?
+    assert i_node.word?
+    assert i_node.children['e'].word?
   end
 
   def test_substrings_arent_words
     @completion.insert('hello')
 
-    refute @completion.rootnode.children['h'].is_word?
+    refute @completion.rootnode.children['h'].word?
   end
 
   def test_count
@@ -89,7 +89,6 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_populate_dictionary
-    skip
     dictionary = File.read('/usr/share/dict/words')
     @completion.populate(dictionary)
 
@@ -97,7 +96,6 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_populate_denver_addresses
-    skip
     dictionary = File.readlines('./test/addresses.csv')
     dictionary.delete_at(0)
     dictionary.each do |line|
@@ -122,7 +120,7 @@ class CompleteMeTest < Minitest::Test
     @completion.delete('hi')
 
     assert_equal ['h'], @completion.rootnode.children.keys
-    refute @completion.rootnode.children['h'].children['i'].is_word?
+    refute @completion.rootnode.children['h'].children['i'].word?
   end
 
   def test_delete_of_word_with_no_children
@@ -132,7 +130,7 @@ class CompleteMeTest < Minitest::Test
 
     i_node = @completion.rootnode.children['h'].children['i']
 
-    assert i_node.is_word?
+    assert i_node.word?
     refute i_node.children.keys.include?('m')
   end
 
@@ -143,7 +141,7 @@ class CompleteMeTest < Minitest::Test
 
     i_node = @completion.rootnode.children['h'].children['i']
 
-    assert i_node.is_word?
+    assert i_node.word?
     refute i_node.children.keys.include?('d')
   end
 
@@ -157,7 +155,6 @@ class CompleteMeTest < Minitest::Test
   def test_remove_suggestions
     @completion.insert('a')
     @completion.insert('at')
-
     @completion.select('a', 'at')
 
     assert_equal %w[at a], @completion.suggest('a')

@@ -22,7 +22,7 @@ class Node
     @word = false
   end
 
-  def is_word?
+  def word?
     @word
   end
 
