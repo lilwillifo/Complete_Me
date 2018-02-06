@@ -166,4 +166,16 @@ class CompleteMeTest < Minitest::Test
 
     assert_equal ['a'], @completion.suggest('a')
   end
+
+  def test_suggest_substring
+    @completion.insert('complete')
+    @completion.insert('incomplete')
+    @completion.insert('copter')
+
+    assert_equal %w[complete incomplete], @completion.suggest_substring('com')
+
+    @completion.select('com', 'incomplete')
+
+    assert_equal %w[incomplete complete], @completion.suggest_substring('com')
+  end
 end

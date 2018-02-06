@@ -8,10 +8,12 @@ class CompleteMe
   def initialize
     @rootnode = Node.new('')
     @totalwords = 0
+    @dictionary = []
   end
 
   def insert(word)
     @totalwords += 1
+    @dictionary << word
     letters = word.downcase.chars
     insert_helper(letters, @rootnode)
   end
@@ -45,6 +47,16 @@ class CompleteMe
     letters = substring.downcase.chars
     sub_node = find_substring_node(letters, @rootnode)
     (sub_node.retrieve_selections + suggest_array(sub_node, substring)).uniq
+  end
+
+  def suggest_substring(substring)
+    all_words = @dictionary.find_all do |word|
+      word.include?(substring)
+    end
+    suggestions = all_words.each do |word|
+      suggest(word) unless word == substring
+    end
+    (suggest(substring) + suggestions).uniq
   end
 
   def find_substring_node(letters, node)
@@ -82,6 +94,7 @@ class CompleteMe
   end
 
   def delete(word)
+    @dictionary.delete(word)
     letters = word.downcase.chars
     parents = find_parents(letters, @rootnode)
     parent = parents[-1]
