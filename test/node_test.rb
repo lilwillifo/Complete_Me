@@ -62,7 +62,7 @@ class NodeTest < Minitest::Test
     node.add_select('a')
     node.add_select('at')
 
-    assert_equal ['a','at'], node.retrieve_selections
+    assert_equal %w[a at], node.retrieve_selections
 
     node.delete_selection('at')
 

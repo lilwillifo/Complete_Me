@@ -1,4 +1,4 @@
-
+# class of nodes with characters
 class Node
   attr_reader :letter,
               :children
@@ -19,15 +19,14 @@ class Node
   end
 
   def delete_word
-      @word = false
+    @word = false
   end
 
   def is_word?
     @word
   end
 
-  def add_select(word)
-    inserted = false
+  def add_select(word, inserted = false)
     index = 0
     while !inserted && index < @selections.length
       if @selections[index][0] == word
@@ -54,8 +53,6 @@ class Node
 
   def delete_selection(word)
     index = retrieve_selections.index(word)
-    if index
-      @selections.delete_at(index)
-    end
+    @selections.delete_at(index) unless index.nil?
   end
 end
