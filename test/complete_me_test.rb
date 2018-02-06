@@ -66,13 +66,10 @@ class CompleteMeTest < Minitest::Test
   def test_suggest
     @completion.insert('hello')
     @completion.insert('hey')
-    @completion.insert('world')
 
     root = @completion.rootnode
 
-    assert_equal 'o', @completion.find_substring_node(%w[w o], root).letter
     assert_equal 'e', @completion.find_substring_node(%w[h e], root).letter
-
     assert_equal @completion.suggest('he'), %w[hello hey]
 
     @completion.insert('he')
@@ -135,20 +132,19 @@ class CompleteMeTest < Minitest::Test
 
     i_node = @completion.rootnode.children['h'].children['i']
 
-    assert_equal ['h'], @completion.rootnode.children.keys
     assert i_node.is_word?
     refute i_node.children.keys.include?('m')
   end
 
-  def test_delete_word_with_parent_word_a_few_steps_back
-    @completion.insert('ask')
-    @completion.insert('asking')
-    @completion.delete('asking')
+  def test_delete_word_with_parent_word_steps_back
+    @completion.insert('hi')
+    @completion.insert('hide')
+    @completion.delete('hide')
 
-    k_node = @completion.rootnode.children['a'].children['s'].children['k']
+    i_node = @completion.rootnode.children['h'].children['i']
 
-    assert k_node.is_word?
-    refute k_node.children.keys.include?('i')
+    assert i_node.is_word?
+    refute i_node.children.keys.include?('d')
   end
 
   def test_delete_only_word_in_tree
@@ -162,9 +158,9 @@ class CompleteMeTest < Minitest::Test
     @completion.insert('a')
     @completion.insert('at')
 
-    @completion.select('a','at')
+    @completion.select('a', 'at')
 
-    assert_equal ['at','a'], @completion.suggest('a')
+    assert_equal %w[at a], @completion.suggest('a')
 
     @completion.delete('at')
 
