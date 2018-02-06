@@ -85,14 +85,16 @@ class CompleteMe
     letters = word.downcase.chars
     parents = find_parents(letters, @rootnode)
     parent = parents[-1]
-    unless parent == @rootnode
-      if !parent.children.empty?
-        parent.delete_word
-        remove_suggestions(parents, word.downcase)
-      else
-        node_array = delete_with_no_children(word.downcase.chars, parents)
-        remove_suggestions(node_array, word.downcase)
-      end
+    delete_helper(parent, parents, word) unless parent == @rootnode
+  end
+
+  def delete_helper(parent, parents, word)
+    if !parent.children.empty?
+      parent.delete_word
+      remove_suggestions(parents, word.downcase)
+    else
+      node_array = delete_with_no_children(word.downcase.chars, parents)
+      remove_suggestions(node_array, word.downcase)
     end
   end
 
@@ -119,8 +121,7 @@ class CompleteMe
         next_node = node.children[letters[0]]
         letters.delete_at(0)
         parents += find_parents(letters, next_node)
-      else
-        parents
+      else parents
       end
     end
     parents

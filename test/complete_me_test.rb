@@ -113,7 +113,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_delete_if_word_doesnt_exist
-    assert_equal nil, @completion.delete('anything')
+    assert_nil @completion.delete('anything')
   end
 
   def test_delete_of_word_with_children
