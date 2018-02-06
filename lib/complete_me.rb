@@ -83,7 +83,7 @@ class CompleteMe
   def delete(word)
     letters = word.downcase.chars
     parent_array = delete_helper_find(letters, @rootnode)
-    if !parent_array[-1].children.empty?#word has children
+    if !parent_array[-1].children.empty? # word has children
       parent_array[-1].delete_word
     else
       delete_helper(word.downcase.chars, parent_array)
